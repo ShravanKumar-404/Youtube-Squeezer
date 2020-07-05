@@ -2,9 +2,9 @@
 
 This is my Initial Build
 
-Youtube Squeezer is like a Youtube Downloader
+# Youtube Squeezer is like a Youtube Downloader
 
-Features :
+# Features :
 
 1. Downloads various video sizes,formats and audio formats for a single file download
 2. Downloads full playlist and option to choose videos from a playlist
@@ -12,7 +12,7 @@ Features :
 4. Batch downloader for single videos and downloades the best format available
 5. Easy to use
 
-To Do :
+# To Do :
 
 1. making available links and details in history
 2. light and dark modes
