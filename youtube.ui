@@ -83,7 +83,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>6</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideLeft</enum>
@@ -2450,7 +2450,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Changes : 05-07-2020</string>
+       <string>Changes : 07-07-2020</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_13">
@@ -2469,7 +2469,45 @@
        </font>
       </property>
       <property name="text">
-       <string>Intial Build</string>
+       <string>Build 0.3</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>652</x>
+        <y>170</y>
+        <width>281</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>some ui changes</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_15">
+      <property name="geometry">
+       <rect>
+        <x>650</x>
+        <y>190</y>
+        <width>281</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>single download works perfectly</string>
       </property>
      </widget>
     </widget>
