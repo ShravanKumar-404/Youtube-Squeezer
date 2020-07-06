@@ -21,4 +21,3 @@ To Do :
 
 Screenshots
 
-https://github.com/shravan-code/Youtube-Squeezer/blob/master/styles/green_light_pic.PNG
