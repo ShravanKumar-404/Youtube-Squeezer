@@ -21,3 +21,5 @@ To Do :
 
 Screenshots
 
+![alt text](https://github.com/shravan-code/Youtube-Squeezer/blob/master/styles/green_light_pic.PNG)
+![alt text](https://github.com/shravan-code/Youtube-Squeezer/blob/master/styles/marine_dark_pic.PNG)
