@@ -1,6 +1,6 @@
 # Youtube-Squeezer
 
-Build 0.2
+Build 0.3
 
 Youtube Squeezer is like a Youtube Downloader
 
