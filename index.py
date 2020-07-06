@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
 
-import style
+import styling
 import sys
 import os
 import humanize
@@ -15,13 +15,16 @@ interface, _ = loadUiType('youtube.ui')
 
 
 class Application(QMainWindow, interface):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(Application, self).__init__(parent)
         QMainWindow.__init__(self)
         self.setupUi(self)
 
         self.ui_initial()
-        self.buttons_handler()
+        self.ui_playlist()
+        self.ui_single()
+        self.ui_batch()
+        self.ui_buttons()
 
     def ui_initial(self):
         # it contains all ui changes
@@ -32,33 +35,20 @@ class Application(QMainWindow, interface):
         self.setMaximumSize(1090, 650)
         self.status.setText('')
 
-        ############ PLAYLIST ####################
+    def theme(self):
+        current_theme = self.comboBox_theme.currentIndex()
 
-        self.urlText.setText('')
-        self.browseText.setText('')
-        self.error_url.setText('')
-        self.error_browse.setText('')
-        self.browseText.setEnabled(False)
-        self.browseButton.setEnabled(False)
-        self.type_combobox.setEnabled(False)
+        if current_theme == 0:
+            self.setStyleSheet(styling.green_light)
+        elif current_theme == 1:
+            self.setStyleSheet(styling.marine_dark)
 
-        ############ SINGLE ####################
-
-        self.urlText_single.setText('')
-        self.browseText_single.setText('')
-        self.error_url_single.setText('')
-        self.error_browse_single.setText('')
-        self.video_radioButton.setChecked(True)
-
-        ############ BATCH ####################
-
-        self.urlText_batch.setText('')
-        self.browseText_batch.setText('')
-        self.error_url_batch.setText('')
-        self.error_browse_batch.setText('')
-
-    def buttons_handler(self):
+    def ui_buttons(self):
         # it contains all changes of buttons
+
+        ########## THEME #############
+
+        self.theme_button.clicked.connect(self.theme)
 
         self.go_button.clicked.connect(self.go)
         self.single_tab.setVisible(False)
@@ -66,6 +56,7 @@ class Application(QMainWindow, interface):
         self.playlist_tab.setVisible(False)
         self.history_tab.setVisible(False)
         self.about_tab.setVisible(False)
+        self.settings_tab.setVisible(False)
 
         ############ TABS ####################
 
@@ -74,30 +65,7 @@ class Application(QMainWindow, interface):
         self.playlist_tab.clicked.connect(self.playlist)
         self.history_tab.clicked.connect(self.history)
         self.about_tab.clicked.connect(self.about)
-
-        ############ PLAYLIST ####################
-
-        self.downloadButton.clicked.connect(self.download_playlist)
-        self.browseButton.clicked.connect(self.browse_directory_playlist)
-        # self.resetButton.clicked.connect(self.reset)
-        self.getButton.clicked.connect(self.get_play_list)
-        self.select_all.clicked.connect(self.selecting_all_playlist)
-        self.deselect_all.clicked.connect(self.deselecting_all_playlist)
-        self.playlist_list.itemSelectionChanged.connect(self.select_me_playlist)
-
-        ############ SINGLE ####################
-
-        self.getButton_single.clicked.connect(self.get_single)
-        self.browseButton_single.clicked.connect(self.browse_directory_single)
-        self.video_radioButton.toggled.connect(self.video_checked)
-        self.audio_radioButton.toggled.connect(self.audio_checked)
-        self.downloadButton_single.clicked.connect(self.download_single)
-
-        ############ BATCH ####################
-        self.batch_add_button.clicked.connect(self.batch_add)
-        self.delete_batch.clicked.connect(self.batch_delete)
-        self.browseButton_batch.clicked.connect(self.batch_browse)
-        self.downloadButton__batch.clicked.connect(self.batch_download)
+        self.settings_tab.clicked.connect(self.settings)
 
     def go(self):
         self.single()
@@ -105,6 +73,7 @@ class Application(QMainWindow, interface):
         self.playlist_tab.setVisible(True)
         self.history_tab.setVisible(True)
         self.about_tab.setVisible(True)
+        self.settings_tab.setVisible(True)
 
     def single(self):
         self.single_tab.setVisible(True)
@@ -129,10 +98,33 @@ class Application(QMainWindow, interface):
 
     def about(self):
         self.logo.setText('Youtube Squeezer')
-        self.tabs.setCurrentIndex(5)
+        self.tabs.setCurrentIndex(6)
         self.status.setText('')
 
+    def settings(self):
+        self.tabs.setCurrentIndex(5)
+        self.status.setText('')
+        self.logo.setText('Youtube Squeezer')
+
     ##################### PLAYLIST ###############################
+
+    def ui_playlist(self):
+        self.urlText.setText('')
+        self.browseText.setText('')
+        self.error_url.setText('')
+        self.error_browse.setText('')
+        self.browseText.setEnabled(False)
+        self.browseButton.setEnabled(False)
+        self.type_combobox.setEnabled(False)
+
+        self.downloadButton.clicked.connect(self.download_playlist)
+        self.browseButton.clicked.connect(self.browse_directory_playlist)
+        # self.resetButton.clicked.connect(self.reset)
+        self.getButton.clicked.connect(self.get_play_list)
+        self.select_all.clicked.connect(self.selecting_all_playlist)
+        self.deselect_all.clicked.connect(self.deselecting_all_playlist)
+        self.playlist_list.itemSelectionChanged.connect(
+            self.select_me_playlist)
 
     original_playlist_links = []
     items_duplicates = []
@@ -151,17 +143,18 @@ class Application(QMainWindow, interface):
             self.error_url.setText('Please enter Valid Playlist Video URL')
         else:
             try:
-                #### DISABLING
+                # DISABLING
                 self.error_url.setText('')
 
-                #### ENABLING
-                self.status.setText('Started Getting Playlist Details........Wait !!!!')
+                # ENABLING
+                self.status.setText(
+                    'Started Getting Playlist Details........Wait !!!!')
 
                 self.browseText.setEnabled(True)
                 self.browseButton.setEnabled(True)
                 self.type_combobox.setEnabled(True)
 
-                #### PLAYLIST CREATION
+                # PLAYLIST CREATION
 
                 playlist_to_youtube_urls = []
 
@@ -184,11 +177,11 @@ class Application(QMainWindow, interface):
 
                 ############################ LOOPS INTEGRATION  ###################################
 
-                #### EMPTY LISTS
+                # EMPTY LISTS
 
                 titles_links = []
 
-                ################################## LIST TITLES ASSIGNING
+                # LIST TITLES ASSIGNING
 
                 for title in playlist_videos:
                     name = title['playlist_meta']['title']
@@ -198,12 +191,15 @@ class Application(QMainWindow, interface):
 
                 print('playlist titles added to titles_links')
 
-                #### MATCHING LINKS THROUGH DICTIONARY
+                # MATCHING LINKS THROUGH DICTIONARY
 
-                youtube_dicts = dict(zip(titles_links, playlist_to_youtube_urls))
+                youtube_dicts = dict(
+                    zip(titles_links, playlist_to_youtube_urls))
                 self.youtube_matching_links.update(youtube_dicts)
-                print(f'youtube_matching_links = {self.youtube_matching_links}')
-                print(f'Titles and urls merged to dictionary successfully to youtube_matching_links')
+                print(
+                    f'youtube_matching_links = {self.youtube_matching_links}')
+                print(
+                    f'Titles and urls merged to dictionary successfully to youtube_matching_links')
 
                 ################################### ASSIGNING CODE TO GUI ################################
 
@@ -223,11 +219,12 @@ class Application(QMainWindow, interface):
             self.items_duplicates.append(item.text())
         QApplication.processEvents()
 
-        #### DUPLICATES REMOVING
+        # DUPLICATES REMOVING
 
         print('duplicates_removing started')
 
-        xyz = [self.items_lists.append(x) for x in self.items_duplicates if x not in self.items_lists]
+        xyz = [self.items_lists.append(
+            x) for x in self.items_duplicates if x not in self.items_lists]
 
         print('duplicates_removing finished \n')
         print(f'items_list = {xyz}')
@@ -246,15 +243,17 @@ class Application(QMainWindow, interface):
             self.browseText.setEnabled(True)
             self.browseButton.setEnabled(True)
 
-            browse_location = QFileDialog.getExistingDirectory(self, 'Select Destination Folder')
+            browse_location = QFileDialog.getExistingDirectory(
+                self, 'Select Destination Folder')
             self.browseText.setText(str(browse_location))
-            print(f'browse directory created successfully =  {browse_location}')
+            print(
+                f'browse directory created successfully =  {browse_location}')
 
         print('browse directory function  finished \n')
 
     def download_playlist(self):
 
-        #### ORIGINAL YOUTUBE LINKS
+        # ORIGINAL YOUTUBE LINKS
 
         if self.items_lists != '':
             for item in self.items_lists:
@@ -309,11 +308,14 @@ class Application(QMainWindow, interface):
 
         print(f'directory changed to current directory : {directory} ')
 
+        self.batch_tab.setEnabled(False)
+        self.single_tab.setEnabled(False)
+
         if type_selected == 0:
             try:
                 for link in self.original_playlist_links:
                     paf_youtube = pafy.new(link)
-                    stream = paf_youtube.getbest(preftype = 'mp4')
+                    stream = paf_youtube.getbest(preftype='mp4')
 
                     title = paf_youtube.title
                     duration = paf_youtube.duration
@@ -324,16 +326,21 @@ class Application(QMainWindow, interface):
                     self.duration.setText(f'Duration : {duration}')
                     self.size_file.setText(f'Size : {size}')
 
-                    stream.download(filepath = directory, callback = self.playlist_progress)
+                    stream.download(filepath=directory,
+                                    callback=self.playlist_progress)
                     QApplication.processEvents()
                     print(f'{title}  download finished')
+
+                    self.batch_tab.setEnabled(True)
+                    self.single_tab.setEnabled(True)
+
             except Exception:
                 print('Information provided is not sufficient')
         elif type_selected == 1:
             try:
                 for link in self.original_playlist_links:
                     paf_youtube = pafy.new(link)
-                    stream = paf_youtube.getbestaudio(preftype = 'm4a')
+                    stream = paf_youtube.getbestaudio(preftype='m4a')
 
                     title = paf_youtube.title
                     duration = paf_youtube.duration
@@ -344,10 +351,15 @@ class Application(QMainWindow, interface):
                     self.duration.setText(f'Duration : {duration}')
                     self.size_file.setText(f'Size : {size}')
 
-                    stream.download(filepath = directory, callback = self.playlist_progress)
+                    stream.download(filepath=directory,
+                                    callback=self.playlist_progress)
                     QApplication.processEvents()
 
                     print(f'{title}  download finished')
+
+                    self.batch_tab.setEnabled(True)
+                    self.single_tab.setEnabled(True)
+
             except Exception:
                 print('Information provided is not sufficient')
 
@@ -370,6 +382,21 @@ class Application(QMainWindow, interface):
         self.playlist_list.clearSelection()
 
     ##################### SINGLE ###############################
+
+    def ui_single(self):
+        self.urlText_single.setText('')
+        self.browseText_single.setText('')
+        self.error_url_single.setText('')
+        self.error_browse_single.setText('')
+        self.video_radioButton.setChecked(True)
+        self.status.setText('')
+
+        self.getButton_single.clicked.connect(self.get_single)
+        self.browseButton_single.clicked.connect(self.browse_directory_single)
+        self.video_radioButton.toggled.connect(self.video_checked)
+        self.audio_radioButton.toggled.connect(self.audio_checked)
+        self.downloadButton_single.clicked.connect(self.download_single)
+        self.resetButton_single.clicked.connect(self.reset_single)
 
     def get_single(self):
         single_url = self.urlText_single.text()
@@ -418,9 +445,11 @@ class Application(QMainWindow, interface):
             self.browseText_single.setEnabled(True)
             self.browseButton_single.setEnabled(True)
 
-            browse_location = QFileDialog.getExistingDirectory(self, 'Select Destination Folder')
+            browse_location = QFileDialog.getExistingDirectory(
+                self, 'Select Destination Folder')
             self.browseText_single.setText(str(browse_location))
-            print(f'browse directory created successfully =  {browse_location}')
+            print(
+                f'browse directory created successfully =  {browse_location}')
 
             self.downloadButton_single.setEnabled(True)
 
@@ -432,8 +461,13 @@ class Application(QMainWindow, interface):
 
         try:
             if url == '' or location == '':
-                self.status.setText('Please enter valid url or valid save location')
+                self.status.setText(
+                    'Please enter valid url or valid save location')
             else:
+
+                self.batch_tab.setEnabled(False)
+                self.playlist_tab.setEnabled(False)
+
                 audio_radio = self.audio_radioButton.isChecked()
 
                 os.chdir(location)
@@ -453,8 +487,11 @@ class Application(QMainWindow, interface):
 
                     audio = pafy.new(url)
                     streams = audio.audiostreams
-                    download = streams[audio_index].download(file_location, callback = self.single_progress)
+                    download = streams[audio_index].download(
+                        file_location, callback=self.single_progress)
 
+                    self.batch_tab.setEnabled(True)
+                    self.playlist_tab.setEnabled(True)
 
                 else:
                     video_index = self.video_combobox_single.currentIndex()
@@ -474,7 +511,11 @@ class Application(QMainWindow, interface):
 
                     video = pafy.new(url)
                     streams = video.videostreams
-                    download = streams[video_index].download(file_location, callback = self.single_progress)
+                    download = streams[video_index].download(
+                        file_location, callback=self.single_progress)
+
+                    self.batch_tab.setEnabled(True)
+                    self.playlist_tab.setEnabled(True)
 
         except Exception:
             self.status.setText('Please enter Valid Details')
@@ -497,7 +538,35 @@ class Application(QMainWindow, interface):
         self.video_combobox_single.setEnabled(False)
         self.audio_combobox_single.setEnabled(True)
 
+    def reset_single(self):
+        self.urlText_single.setText('')
+        self.browseText_single.setText('')
+        self.video_audio_title_single.setText('')
+        self.duration_single.setText('')
+        self.size_file_single.setText('')
+        self.error_url_single.setText('')
+        self.error_browse_single.setText('')
+
+        self.browseText_single.setEnabled(False)
+        self.browseButton_single.setEnabled(False)
+        self.video_combobox_single.setEnabled(False)
+        self.audio_combobox_single.setEnabled(False)
+        self.downloadButton_single.setEnabled(False)
+        self.progressBar_single.setEnabled(False)
+
     ##################### BATCH ###############################
+
+    def ui_batch(self):
+        self.urlText_batch.setText('')
+        self.browseText_batch.setText('')
+        self.error_url_batch.setText('')
+        self.error_browse_batch.setText('')
+
+        self.batch_add_button.clicked.connect(self.batch_add)
+        self.delete_batch.clicked.connect(self.batch_delete)
+        self.browseButton_batch.clicked.connect(self.batch_browse)
+        self.downloadButton__batch.clicked.connect(self.batch_download)
+        self.resetButton_batch.clicked.connect(self.reset_batch)
 
     batch_dict = {}
 
@@ -516,7 +585,7 @@ class Application(QMainWindow, interface):
 
                 youtube_link = pafy.new(batch_url)
                 video_title = youtube_link.title
-                self.batch_dict.update({str(video_title):str(batch_url)})
+                self.batch_dict.update({str(video_title): str(batch_url)})
                 self.batch_list.addItem(video_title)
 
                 self.urlText_batch.setText('')
@@ -530,13 +599,15 @@ class Application(QMainWindow, interface):
 
     def batch_browse(self):
         batch_url = self.urlText_batch.text()
-        items = [self.batch_list.item(i).text() for i in range(self.batch_list.count())]
+        items = [self.batch_list.item(i).text()
+                 for i in range(self.batch_list.count())]
 
         try:
             if items == '':
                 self.error_url_batch.setText('Enter Url')
             else:
-                location = QFileDialog.getExistingDirectory(self, 'Select Destination Folder')
+                location = QFileDialog.getExistingDirectory(
+                    self, 'Select Destination Folder')
                 self.browseText_batch.setText(location)
 
                 self.type_combobox_batch.setEnabled(True)
@@ -545,7 +616,8 @@ class Application(QMainWindow, interface):
                 self.progressBar_batch.setEnabled(True)
 
         except Exception:
-            self.error_browse_batch.setText('Please provide Valid File Location')
+            self.error_browse_batch.setText(
+                'Please provide Valid File Location')
 
     def batch_download(self):
         location = self.browseText_batch.text()
@@ -553,7 +625,8 @@ class Application(QMainWindow, interface):
 
         print(index)
 
-        items = [self.batch_list.item(i).text() for i in range(self.batch_list.count())]
+        items = [self.batch_list.item(i).text()
+                 for i in range(self.batch_list.count())]
 
         links = []
 
@@ -564,6 +637,9 @@ class Application(QMainWindow, interface):
                     links.append(link)
 
         os.chdir(location)
+
+        self.single_tab.setEnabled(False)
+        self.playlist_tab.setEnabled(False)
 
         if index == 1:
             file_location = location + r'/Youtube Squeezer/BATCH/Audios'
@@ -576,7 +652,7 @@ class Application(QMainWindow, interface):
 
             for link in links:
                 paf_youtube = pafy.new(link)
-                stream = paf_youtube.getbest(preftype = 'm4a')
+                stream = paf_youtube.getbest(preftype='m4a')
 
                 title = paf_youtube.title
                 duration = paf_youtube.duration
@@ -587,7 +663,8 @@ class Application(QMainWindow, interface):
                 self.duration_batch.setText(f'Duration : {duration}')
                 self.size_file_batch.setText(f'Size : {size}')
 
-                stream.download(filepath = file_location, callback = self.batch_progress)
+                stream.download(filepath=file_location,
+                                callback=self.batch_progress)
                 QApplication.processEvents()
                 print(f'{title}  download finished')
         else:
@@ -601,7 +678,7 @@ class Application(QMainWindow, interface):
 
             for link in links:
                 paf_youtube = pafy.new(link)
-                stream = paf_youtube.getbest(preftype = 'mp4')
+                stream = paf_youtube.getbest(preftype='mp4')
 
                 title = paf_youtube.title
                 duration = paf_youtube.duration
@@ -612,9 +689,13 @@ class Application(QMainWindow, interface):
                 self.duration_batch.setText(f'Duration : {duration}')
                 self.size_file_batch.setText(f'Size : {size}')
 
-                stream.download(filepath = file_location, callback = self.batch_progress)
+                stream.download(filepath=file_location,
+                                callback=self.batch_progress)
                 QApplication.processEvents()
                 print(f'{title}  download finished')
+
+        self.single_tab.setEnabled(True)
+        self.playlist_tab.setEnabled(True)
 
     def batch_progress(self, total, received, ratio, rate, time):
         if total > 0:
@@ -626,10 +707,26 @@ class Application(QMainWindow, interface):
                 str(f'Time Remaining : {remaining_time} mins and Downloaded - {download_percent}%'))
             QApplication.processEvents()
 
+    def reset_batch(self):
+        self.urlText_single.setText('')
+        self.browseText_single.setText('')
+        self.video_audio_title_single.setText('')
+        self.duration_single.setText('')
+        self.size_file_single.setText('')
+        self.error_url_single.setText('')
+        self.error_browse_single.setText('')
+
+        self.browseText_single.setEnabled(False)
+        self.browseButton_single.setEnabled(False)
+        self.video_combobox_single.setEnabled(False)
+        self.audio_combobox_single.setEnabled(False)
+        self.downloadButton_single.setEnabled(False)
+        self.progressBar_single.setEnabled(False)
+
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyleSheet(style.style_data)
+    app.setStyleSheet(styling.green_light)
     window = Application()
     window.show()
     app.exec_()
