@@ -3,7 +3,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
 
-import styling
+import styles.marine_dark as mk
+import styles.green_light as gl
 import sys
 import os
 import humanize
@@ -39,9 +40,9 @@ class Application(QMainWindow, interface):
         current_theme = self.comboBox_theme.currentIndex()
 
         if current_theme == 0:
-            self.setStyleSheet(styling.green_light)
+            self.setStyleSheet(gl.style_data)
         elif current_theme == 1:
-            self.setStyleSheet(styling.marine_dark)
+            self.setStyleSheet(mk.style_data)
 
     def ui_buttons(self):
         # it contains all changes of buttons
@@ -726,7 +727,7 @@ class Application(QMainWindow, interface):
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyleSheet(styling.green_light)
+    app.setStyleSheet(gl.style_data)
     window = Application()
     window.show()
     app.exec_()
