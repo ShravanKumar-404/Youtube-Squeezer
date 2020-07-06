@@ -11,7 +11,7 @@ QProgressBar
 }
 QProgressBar::chunk
 {
-    background-color: #96bb7c;
+    background-color: #184d47;
     border-radius: 10;
 }
 QLabel

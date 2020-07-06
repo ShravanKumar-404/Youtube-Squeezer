@@ -453,6 +453,7 @@ class Application(QMainWindow, interface):
                 f'browse directory created successfully =  {browse_location}')
 
             self.downloadButton_single.setEnabled(True)
+            self.resetButton_single.setEnabled(True)
 
         print('browse directory function  finished \n')
 
@@ -544,9 +545,11 @@ class Application(QMainWindow, interface):
         self.browseText_single.setText('')
         self.video_audio_title_single.setText('')
         self.duration_single.setText('')
-        self.size_file_single.setText('')
         self.error_url_single.setText('')
         self.error_browse_single.setText('')
+        self.video_combobox_single.clear()
+        self.audio_combobox_single.clear()
+        self.progressBar_single.setValue(0)
 
         self.browseText_single.setEnabled(False)
         self.browseButton_single.setEnabled(False)
