@@ -17,3 +17,8 @@ To Do :
 1. making available links and details in history
 2. light and dark modes
 3. some ui changes and code yet to be implemented
+
+
+Screenshots
+
+https://github.com/shravan-code/Youtube-Squeezer/blob/master/styles/green_light_pic.PNG
