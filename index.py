@@ -8,7 +8,6 @@ import styles.green_light as gl
 import sys
 import os
 import humanize
-import time
 import re
 import pafy
 
@@ -16,7 +15,7 @@ interface, _ = loadUiType('youtube.ui')
 
 
 class Application(QMainWindow, interface):
-    def __init__(self, parent=None):
+    def __init__(self, parent = None):
         super(Application, self).__init__(parent)
         QMainWindow.__init__(self)
         self.setupUi(self)
@@ -293,7 +292,7 @@ class Application(QMainWindow, interface):
                     os.chdir(location)
                     print('path already exists and changing to existing directory')
                 else:
-                    os.mkdir(location)
+                    os.makedirs(location)
                     os.chdir(location)
                     print('directory created and moved to new directory')
 
@@ -316,7 +315,7 @@ class Application(QMainWindow, interface):
             try:
                 for link in self.original_playlist_links:
                     paf_youtube = pafy.new(link)
-                    stream = paf_youtube.getbest(preftype='mp4')
+                    stream = paf_youtube.getbest(preftype = 'mp4')
 
                     title = paf_youtube.title
                     duration = paf_youtube.duration
@@ -327,8 +326,8 @@ class Application(QMainWindow, interface):
                     self.duration.setText(f'Duration : {duration}')
                     self.size_file.setText(f'Size : {size}')
 
-                    stream.download(filepath=directory,
-                                    callback=self.playlist_progress)
+                    stream.download(filepath = directory,
+                                    callback = self.playlist_progress)
                     QApplication.processEvents()
                     print(f'{title}  download finished')
 
@@ -341,7 +340,7 @@ class Application(QMainWindow, interface):
             try:
                 for link in self.original_playlist_links:
                     paf_youtube = pafy.new(link)
-                    stream = paf_youtube.getbestaudio(preftype='m4a')
+                    stream = paf_youtube.getbestaudio(preftype = 'm4a')
 
                     title = paf_youtube.title
                     duration = paf_youtube.duration
@@ -352,8 +351,8 @@ class Application(QMainWindow, interface):
                     self.duration.setText(f'Duration : {duration}')
                     self.size_file.setText(f'Size : {size}')
 
-                    stream.download(filepath=directory,
-                                    callback=self.playlist_progress)
+                    stream.download(filepath = directory,
+                                    callback = self.playlist_progress)
                     QApplication.processEvents()
 
                     print(f'{title}  download finished')
@@ -490,7 +489,7 @@ class Application(QMainWindow, interface):
                     audio = pafy.new(url)
                     streams = audio.audiostreams
                     download = streams[audio_index].download(
-                        file_location, callback=self.single_progress)
+                        file_location, callback = self.single_progress)
 
                     self.batch_tab.setEnabled(True)
                     self.playlist_tab.setEnabled(True)
@@ -514,7 +513,7 @@ class Application(QMainWindow, interface):
                     video = pafy.new(url)
                     streams = video.videostreams
                     download = streams[video_index].download(
-                        file_location, callback=self.single_progress)
+                        file_location, callback = self.single_progress)
 
                     self.batch_tab.setEnabled(True)
                     self.playlist_tab.setEnabled(True)
@@ -589,7 +588,7 @@ class Application(QMainWindow, interface):
 
                 youtube_link = pafy.new(batch_url)
                 video_title = youtube_link.title
-                self.batch_dict.update({str(video_title): str(batch_url)})
+                self.batch_dict.update({str(video_title):str(batch_url)})
                 self.batch_list.addItem(video_title)
 
                 self.urlText_batch.setText('')
@@ -656,7 +655,7 @@ class Application(QMainWindow, interface):
 
             for link in links:
                 paf_youtube = pafy.new(link)
-                stream = paf_youtube.getbest(preftype='m4a')
+                stream = paf_youtube.getbest(preftype = 'm4a')
 
                 title = paf_youtube.title
                 duration = paf_youtube.duration
@@ -667,8 +666,8 @@ class Application(QMainWindow, interface):
                 self.duration_batch.setText(f'Duration : {duration}')
                 self.size_file_batch.setText(f'Size : {size}')
 
-                stream.download(filepath=file_location,
-                                callback=self.batch_progress)
+                stream.download(filepath = file_location,
+                                callback = self.batch_progress)
                 QApplication.processEvents()
                 print(f'{title}  download finished')
         else:
@@ -682,7 +681,7 @@ class Application(QMainWindow, interface):
 
             for link in links:
                 paf_youtube = pafy.new(link)
-                stream = paf_youtube.getbest(preftype='mp4')
+                stream = paf_youtube.getbest(preftype = 'mp4')
 
                 title = paf_youtube.title
                 duration = paf_youtube.duration
@@ -693,8 +692,8 @@ class Application(QMainWindow, interface):
                 self.duration_batch.setText(f'Duration : {duration}')
                 self.size_file_batch.setText(f'Size : {size}')
 
-                stream.download(filepath=file_location,
-                                callback=self.batch_progress)
+                stream.download(filepath = file_location,
+                                callback = self.batch_progress)
                 QApplication.processEvents()
                 print(f'{title}  download finished')
 
