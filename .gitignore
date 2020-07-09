@@ -1,3 +1,3 @@
-__pycache__/
-.idea/
-.gitignore
+.idea
+_pycache_
+setup.py
