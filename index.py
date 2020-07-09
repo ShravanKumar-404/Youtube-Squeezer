@@ -28,7 +28,8 @@ class Application(QMainWindow, interface):
 
     def ui_initial(self):
         # it contains all ui changes
-
+        
+        self.setWindowIcon(QIcon('icons\ysr.ico'))
         self.tabs.setCurrentIndex(0)
         self.logo.setText('')
         self.tabs.tabBar().setVisible(False)

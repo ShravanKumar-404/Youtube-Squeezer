@@ -2469,7 +2469,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Build 0.3</string>
+       <string>Build 0.4</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_14">
@@ -2507,7 +2507,7 @@
        </font>
       </property>
       <property name="text">
-       <string>single download works perfectly</string>
+       <string>playlist folder creation fixed</string>
       </property>
      </widget>
     </widget>
