@@ -1,8 +1,13 @@
 # Youtube-Squeezer
 
-Build 0.3
+Build 0.4
 
 Youtube Squeezer is like a Youtube Downloader
+
+# Software Download:
+
+https://raw.githubusercontent.com/shravan-code/Youtube-Squeezer/master/software/Youtube%20Squeezer.exe
+
 
 Features :
 
