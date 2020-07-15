@@ -1,13 +1,6 @@
 # Youtube-Squeezer
 
-Build 0.4
-
-Youtube Squeezer is like a Youtube Downloader
-
-# Software Download:
-
-https://raw.githubusercontent.com/shravan-code/Youtube-Squeezer/master/software/Youtube%20Squeezer.exe
-
+Youtube Squeezer is like a Simple Youtube Downloader
 
 Features :
 
@@ -17,12 +10,6 @@ Features :
 4. Batch downloader for single videos and downloades the best format available
 5  Light and dark themes in settings
 6. Easy to use
-
-To Do :
-
-1. making available links and details in history
-2. some ui changes and code yet to be implemented
-3. video and audio auto conversions
 
 
 Screenshots
