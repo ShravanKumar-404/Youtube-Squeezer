@@ -1,3 +1,4 @@
+from PyQt5 import QtCore
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -33,7 +34,8 @@ class Application(QMainWindow, interface):
         self.tabs.setCurrentIndex(0)
         self.logo.setText('')
         self.tabs.tabBar().setVisible(False)
-        self.setMaximumSize(1090, 650)
+        self.setFixedSize(1090, 650)
+        self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
         self.status.setText('')
 
     def theme(self):
@@ -50,12 +52,13 @@ class Application(QMainWindow, interface):
         ########## THEME #############
 
         self.theme_button.clicked.connect(self.theme)
+        self.quit.clicked.connect(QApplication.quit)
+        self.minimize.clicked.connect(self.showMinimized)
 
         self.go_button.clicked.connect(self.go)
         self.single_tab.setVisible(False)
         self.batch_tab.setVisible(False)
         self.playlist_tab.setVisible(False)
-        self.history_tab.setVisible(False)
         self.about_tab.setVisible(False)
         self.settings_tab.setVisible(False)
 
@@ -64,7 +67,6 @@ class Application(QMainWindow, interface):
         self.single_tab.clicked.connect(self.single)
         self.batch_tab.clicked.connect(self.batch)
         self.playlist_tab.clicked.connect(self.playlist)
-        self.history_tab.clicked.connect(self.history)
         self.about_tab.clicked.connect(self.about)
         self.settings_tab.clicked.connect(self.settings)
 
@@ -72,7 +74,6 @@ class Application(QMainWindow, interface):
         self.single()
         self.batch_tab.setVisible(True)
         self.playlist_tab.setVisible(True)
-        self.history_tab.setVisible(True)
         self.about_tab.setVisible(True)
         self.settings_tab.setVisible(True)
 
@@ -91,19 +92,13 @@ class Application(QMainWindow, interface):
         self.logo.setText('Youtube Squeezer')
         self.tabs.setCurrentIndex(3)
 
-    def history(self):
-        self.history_tab.setVisible(True)
-        self.logo.setText('Youtube Squeezer')
-        self.tabs.setCurrentIndex(4)
-        self.status.setText('')
-
     def about(self):
         self.logo.setText('Youtube Squeezer')
-        self.tabs.setCurrentIndex(6)
+        self.tabs.setCurrentIndex(5)
         self.status.setText('')
 
     def settings(self):
-        self.tabs.setCurrentIndex(5)
+        self.tabs.setCurrentIndex(4)
         self.status.setText('')
         self.logo.setText('Youtube Squeezer')
 
